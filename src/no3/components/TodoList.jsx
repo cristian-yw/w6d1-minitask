@@ -8,11 +8,11 @@ function TodoList() {
   return (
     <ul>
       {todos.map((todo) => (
-        <li key={todo.id} style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
-          <span onClick={() => dispatch({ type: "TOGGLE_TODO", payload: todo.id })}>
+        <li key={todo.id} style={{ textDecoration: todo.completed ? "line-through" : "none" }}className="mr-2">
+          <span onClick={() => dispatch({ type: "TOGGLE_TODO", payload: todo.id })} className="cursor-pointer">
             {todo.title}
           </span>
-          <button onClick={() => dispatch({ type: "DELETE_TODO", payload: todo.id })}>
+          <button onClick={() => dispatch({ type: "DELETE_TODO", payload: todo.id })} className="bg-red-500 text-white px-2 py-1 rounded ml-2">
             Delete
           </button>
         </li>
