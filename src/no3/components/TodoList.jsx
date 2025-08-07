@@ -1,24 +1,26 @@
-import { useContext } from "react";
-import { TodoContext } from "../todoContext.js";
-function TodoList() {
-  const { todos, dispatch } = useContext(TodoContext);
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTask, removeTask, editTask } from "../../redux/slices/todoSlice.js";
 
-  if (todos.length === 0) return <p>No todos available.</p>;
+
+function TodoList() {
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
 
   return (
-    <ul>
-      {todos.map((todo) => (
-        <li key={todo.id} style={{ textDecoration: todo.completed ? "line-through" : "none" }}className="mr-2">
-          <span onClick={() => dispatch({ type: "TOGGLE_TODO", payload: todo.id })} className="cursor-pointer">
-            {todo.title}
-          </span>
-          <button onClick={() => dispatch({ type: "DELETE_TODO", payload: todo.id })} className="bg-red-500 text-white px-2 py-1 rounded ml-2">
-            Delete
-          </button>
-        </li>
+    <>
+      {todos.map(todo => (
+        <div key={todo.id}>
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => dispatch(toggleTask(todo.id))}
+          />
+          {todo.title}
+          <button onClick={() => dispatch(editTask({ id: todo.id, title: prompt("Edit task", todo.title) }))}>Edit</button>
+          <button onClick={() => dispatch(removeTask(todo.id))}>Delete</button>
+        </div>
       ))}
-    </ul>
+    </>
   );
 }
-
 export default TodoList;

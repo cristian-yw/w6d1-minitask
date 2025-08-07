@@ -1,30 +1,31 @@
-import { useContext, useState } from "react";
-import { TodoContext } from "../todoContext.js";
+// components/TodoForm.jsx
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../redux/slices/todoSlice.js";
 
-function TodoForm() {
+export default function TodoForm({ onClose }) {
   const [title, setTitle] = useState("");
-  const { dispatch } = useContext(TodoContext);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.trim()) {
-      dispatch({ type: "ADD_TODO", payload: title });
-      setTitle("");
-    }
+    dispatch(addTask(title));
+    onClose(); 
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow">
       <input
+        className="border px-2 py-1 w-full"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Add new todo"
-        className="border p-2 rounded m-2"
+        placeholder="Task name"
+        required
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+      <button type="submit" className="mt-2 bg-blue-500 text-white px-3 py-1 rounded">
+        Add Task
+      </button>
     </form>
   );
 }
-
-export default TodoForm;
